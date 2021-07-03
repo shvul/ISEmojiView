@@ -31,6 +31,8 @@ final public class KeyboardSettings {
     /// Default is false.
     public var needToShowAbcButton: Bool = false
     
+    public var excludeEmojis: [String] = []
+    
     // MARK: - Init functions
     
     public init(bottomType: BottomType) {

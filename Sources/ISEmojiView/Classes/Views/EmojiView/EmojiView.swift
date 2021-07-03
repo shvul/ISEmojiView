@@ -110,7 +110,15 @@ final public class EmojiView: UIView {
         self.keyboardSettings = keyboardSettings
         
         bottomType = keyboardSettings.bottomType
-        emojis = keyboardSettings.customEmojis ?? EmojiLoader.emojiCategories()
+        emojis = keyboardSettings.customEmojis ?? EmojiLoader.emojiCategories().map { category in
+            let emojis = category.emojis
+                .map { emojis in
+                    emojis.emojis.filter { !keyboardSettings.excludeEmojis.contains($0) }
+                }
+                .filter { !$0.isEmpty }
+                .map { Emoji(emojis: $0) }
+            return EmojiCategory(category: category.category, emojis: emojis)
+        }
         
         if keyboardSettings.countOfRecentsEmojis > 0 {
             emojis.insert(EmojiLoader.recentEmojiCategory(), at: 0)
